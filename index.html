@@ -6,57 +6,41 @@
   <style>
     body {
       margin: 0;
-      padding: 0;
+      padding: 24px 0 40px;
       display: flex;
       flex-direction: column;
       align-items: center;
       background: #f4f4f4;
-      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
+
     #viewer {
+      width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-top: 50px;
+      gap: 24px;
     }
+
+    .image-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
     img {
       max-width: 90vw;
       max-height: 80vh;
       box-shadow: 0 4px 12px #aaa;
       background: #fff;
       border-radius: 8px;
-      margin-bottom: 16px;
-    }
-    .btn-group {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 30px;
-    }
-    button {
-      padding: 10px 24px;
-      font-size: 1.1em;
-      border: none;
-      border-radius: 4px;
-      background: #1d70b8;
-      color: white;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    button:disabled {
-      background: #cccccc;
-      cursor: not-allowed;
+      display: block;
     }
   </style>
 </head>
 <body>
-  <div id="viewer">
-    <img id="mainImage" src="" alt="image" />
-    <div class="btn-group">
-      <button id="prevBtn">Previous</button>
-      <span id="counter"></span>
-      <button id="nextBtn">Next</button>
-    </div>
-  </div>
+  <div id="viewer"></div>
+
   <script>
     // Replace these with your actual image filenames or paths
     const images = [
@@ -65,35 +49,20 @@
       'image3.jpg'
       // Add more image filenames here
     ];
-    let current = 0;
 
-    const mainImage = document.getElementById('mainImage');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const counter = document.getElementById('counter');
+    const viewer = document.getElementById('viewer');
 
-    function updateImage() {
-      mainImage.src = images[current];
-      counter.textContent = `${current + 1} / ${images.length}`;
-      prevBtn.disabled = current === 0;
-      nextBtn.disabled = current === images.length - 1;
-    }
+    images.forEach((src, index) => {
+      const block = document.createElement('div');
+      block.className = 'image-block';
 
-    prevBtn.onclick = () => {
-      if (current > 0) {
-        current--;
-        updateImage();
-      }
-    };
-    nextBtn.onclick = () => {
-      if (current < images.length - 1) {
-        current++;
-        updateImage();
-      }
-    };
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = `Image ${index + 1}`;
 
-    // Initialize
-    updateImage();
+      block.appendChild(img);
+      viewer.appendChild(block);
+    });
   </script>
 </body>
 </html>
